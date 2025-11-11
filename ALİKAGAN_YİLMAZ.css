@@ -8,6 +8,7 @@
   --bg: #e5e8ea;
   --white: #ffffff;
   --card: #f3f3f5;
+  --muted: #c5c7d6;
   --text: #1e6a86;
   --accent: #41cbbf;
   --border: #e6e6e9;
@@ -121,6 +122,26 @@ div {
   transform: scale(1.02);
 }
 
+.seesaw-playground {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 500px;
+  height: 100%;
+  z-index: 5;
+  transform: translateX(-50%);
+  cursor: pointer;
+  background: transparent;
+}
+
+.seesaw-ground {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  background: #95a5a6;
+}
+
 .header-text,
 .header-element h4 {
   font-size: 0.875em;
@@ -156,4 +177,29 @@ div {
   border-radius: var(--radius-sm);
   border-left: 4px solid var(--accent);
   color: #495057;
+}
+
+.seesaw-board {
+  position: absolute;
+  bottom: 130px;
+  z-index: 2;
+  left: 50%;
+  width: 500px;
+  height: 20px;
+  background: #d35400;
+  transform-origin: center center;
+  transform: translateX(-50%) rotate(0deg);
+  border-radius: var(--radius-xs);
+}
+
+.seesaw-pivot {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-bottom: 80px solid #34495e;
+  transform: translateX(-50%);
 }
