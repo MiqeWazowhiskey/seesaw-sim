@@ -103,7 +103,6 @@ function logWeight(e) {
     logContainer.prepend(logEntry);
   }
 }
-
 function updateAngle() {
   const rawAngle =
     ((rightTorque - leftTorque) / Math.max(leftTorque + rightTorque, 1)) * 30;
@@ -114,7 +113,9 @@ function updateAngle() {
 
 function dropWeight(e) {
   const playgroundRect = playground.getBoundingClientRect();
-  const mouseX = e.clientX - playgroundRect.left;
+  const boardRect = seesawBoard.getBoundingClientRect();
+  const previewRect = preWeight.getBoundingClientRect();
+  const mouseX = e.clientX - boardRect.left;
   const weight = parseInt(preWeight.dataset.weight, 10);
   const weightSize = parseInt(preWeight.dataset.size, 10);
   const color = preWeight.dataset.color;
@@ -122,8 +123,7 @@ function dropWeight(e) {
   droppedWeight.className = "weight-generated";
   droppedWeight.textContent = `${weight} kg`;
   droppedWeight.style.position = "absolute";
-  droppedWeight.style.left = `${mouseX - weightSize / 2}px`;
-  droppedWeight.style.top = `0px`;
+  droppedWeight.style.top = "0px";
   droppedWeight.style.width = `${weightSize}px`;
   droppedWeight.style.height = `${weightSize}px`;
   droppedWeight.style.background = color;
@@ -133,11 +133,14 @@ function dropWeight(e) {
   droppedWeight.style.borderRadius = "6px";
   droppedWeight.style.color = "white";
   droppedWeight.style.fontWeight = "bold";
+  droppedWeight.style.pointerEvents = "none";
   playground.appendChild(droppedWeight);
-  const seesawBoard = document.querySelector(".seesaw-board");
-  const boardRect = seesawBoard.getBoundingClientRect();
+  droppedWeight.style.left = `${mouseX - weightSize / 2}px`;
+  const startY = previewRect.top - playgroundRect.top;
+  droppedWeight.style.top = `${startY}px`;
+  droppedWeight.style.transform = "translateY(0px)";
 
-  if (mouseX < playgroundRect.width / 2) {
+  if (mouseX < boardRect.width / 2) {
     leftTotal += weight;
     leftWeightDisplay.textContent = `${leftTotal} kg`;
     leftTorque += weight * (boardRect.width / 2 - mouseX);
@@ -146,24 +149,21 @@ function dropWeight(e) {
     rightWeightDisplay.textContent = `${rightTotal} kg`;
     rightTorque += weight * (mouseX - boardRect.width / 2);
   }
-
   logWeight(e);
   generateNewWeight();
-
-  const targetY =
-    boardRect.top -
-    playgroundRect.top -
-    droppedWeight.offsetHeight / 2 +
-    seesawBoard.offsetHeight / 2;
-
+  const targetY = boardRect.top - playgroundRect.top;
+  console.log("startY:", startY, "targetY:", targetY);
   droppedWeight.animate(
     [
       { transform: `translateY(0px)` },
-      { transform: `translateY(${targetY}px)` },
+      { transform: `translateY(${targetY - startY}px)` },
     ],
     { duration: 500, easing: "ease-in" }
   ).onfinish = () => {
-    droppedWeight.style.top = `${targetY}px`;
+    seesawBoard.appendChild(droppedWeight);
+    droppedWeight.style.bottom = "0px";
+    droppedWeight.style.top = "";
+    droppedWeight.style.transform = "translateY(0px)";
     updateAngle();
   };
 }

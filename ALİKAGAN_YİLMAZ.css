@@ -206,6 +206,7 @@ div {
   transform-origin: center center;
   transform: translateX(-50%) rotate(0deg);
   border-radius: var(--radius-xs);
+  transition: transform 0.5s ease;
 }
 
 .seesaw-pivot {
@@ -220,10 +221,23 @@ div {
   transform: translateX(-50%);
 }
 
-.weight-preview,
-.weight-generated {
+.weight-preview {
   position: absolute;
   margin-top: 2%;
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  pointer-events: none;
+  padding: 0;
+}
+
+.weight-generated {
   width: 50px;
   height: 50px;
   border-radius: 6px;
