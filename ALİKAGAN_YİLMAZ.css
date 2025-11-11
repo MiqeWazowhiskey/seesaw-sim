@@ -124,6 +124,7 @@ div {
 
 .seesaw-playground {
   position: absolute;
+  transition: opacity 0.35s ease, transform 0.35s ease;
   left: 50%;
   top: 0;
   width: 500px;
@@ -132,6 +133,21 @@ div {
   transform: translateX(-50%);
   cursor: pointer;
   background: transparent;
+}
+
+.seesaw-playground.blink {
+  animation: blink 1s ease-in-out infinite;
+}
+
+.starter-text {
+  margin-top: 10%;
+  left: 50%;
+  font-size: 1.25em;
+  color: var(--muted);
+  opacity: 0.7;
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
 }
 
 .seesaw-ground {
@@ -202,4 +218,16 @@ div {
   border-right: 30px solid transparent;
   border-bottom: 80px solid #34495e;
   transform: translateX(-50%);
+}
+
+@keyframes blink {
+  0% {
+    background-color: transparent;
+  }
+  40% {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    background-color: transparent;
+  }
 }
