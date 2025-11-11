@@ -219,7 +219,8 @@ div {
   transform: translateX(-50%);
 }
 
-.weight-preview {
+.weight-preview,
+.weight-generated {
   position: absolute;
   margin-top: 2%;
   width: 50px;
