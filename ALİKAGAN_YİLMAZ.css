@@ -198,7 +198,6 @@ div {
 .seesaw-board {
   position: absolute;
   bottom: 130px;
-  z-index: 2;
   left: 50%;
   width: 500px;
   height: 20px;
@@ -226,7 +225,6 @@ div {
   width: 50px;
   height: 50px;
   border-radius: 6px;
-  background: rgba(100, 100, 255, 0.5);
   display: none;
   justify-content: center;
   align-items: center;
