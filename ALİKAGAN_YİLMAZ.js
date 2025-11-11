@@ -74,28 +74,37 @@ function resetGame() {
   generateNewWeight();
 }
 
-function logWeight(weight, distance, side) {
-  const logText = `${weight} kg weight has been dropped at ${distance} px from the center on the ${side} side.`;
-  const logEntry = document.createElement("div");
-  logEntry.className = "log-entry";
-  logEntry.textContent = logText;
-  logContainer.appendChild(logEntry);
-  logs.push(logText);
-}
-
-function updateAngleAndLog(e) {
+function logWeight(e) {
+  let logText = "";
   const boardRect = seesawBoard.getBoundingClientRect();
   const mouseX = e.clientX - boardRect.left;
   const intWeight = parseInt(preWeight.dataset.weight);
 
   if (mouseX < boardRect.width / 2) {
-    leftTorque += intWeight * (boardRect.width / 2 - mouseX);
-    logWeight(intWeight, boardRect.width / 2 - mouseX);
-  } else {
-    rightTorque += intWeight * (mouseX - boardRect.width / 2);
-    logWeight(intWeight, mouseX - boardRect.width / 2);
-  }
+    logText = `${intWeight} kg dropped on the LEFT side at ${Math.abs(
+      mouseX - boardRect.width / 2
+    ).toFixed(1)} px from the center`;
 
+    logs.push(logText);
+
+    const logEntry = document.createElement("div");
+    logEntry.className = "log-entry";
+    logEntry.textContent = logText;
+    logContainer.prepend(logEntry);
+  } else {
+    logText = `${intWeight} kg dropped on the RIGHT side at ${Math.abs(
+      mouseX - boardRect.width / 2
+    ).toFixed(1)} px from the center`;
+    logs.push(logText);
+
+    const logEntry = document.createElement("div");
+    logEntry.className = "log-entry";
+    logEntry.textContent = logText;
+    logContainer.prepend(logEntry);
+  }
+}
+
+function updateAngle() {
   const rawAngle =
     ((rightTorque - leftTorque) / Math.max(leftTorque + rightTorque, 1)) * 30;
   const angle = Math.max(-30, Math.min(30, rawAngle));
@@ -131,11 +140,14 @@ function dropWeight(e) {
   if (mouseX < playgroundRect.width / 2) {
     leftTotal += weight;
     leftWeightDisplay.textContent = `${leftTotal} kg`;
+    leftTorque += weight * (boardRect.width / 2 - mouseX);
   } else {
     rightTotal += weight;
     rightWeightDisplay.textContent = `${rightTotal} kg`;
+    rightTorque += weight * (mouseX - boardRect.width / 2);
   }
 
+  logWeight(e);
   generateNewWeight();
 
   const targetY =
@@ -152,7 +164,7 @@ function dropWeight(e) {
     { duration: 500, easing: "ease-in" }
   ).onfinish = () => {
     droppedWeight.style.top = `${targetY}px`;
-    updateAngleAndLog(e);
+    updateAngle();
   };
 }
 
