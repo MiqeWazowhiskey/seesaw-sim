@@ -159,9 +159,11 @@ function logWeight(e) {
   localStorage.setItem("logs", JSON.stringify(logs));
 }
 function updateAngle() {
+  const maxDistance = seesawBoard.offsetWidth / 2;
+  const totalWeight = leftTotal + rightTotal;
+  const maxPossibleTorque = totalWeight * maxDistance;
   const rawAngle =
-    ((rightTorque - leftTorque) / Math.max(leftTorque + rightTorque, 1)) *
-    maxTiltAngle;
+    ((rightTorque - leftTorque) / maxPossibleTorque) * maxTiltAngle;
   const angle = Math.max(-maxTiltAngle, Math.min(maxTiltAngle, rawAngle));
   seesawBoard.style.transform = `translateX(-50%) rotate(${angle}deg)`;
   angleDisplay.textContent = `${angle.toFixed(1)}°`;
