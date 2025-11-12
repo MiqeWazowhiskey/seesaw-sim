@@ -12,6 +12,7 @@ The goal of this project was to simulate a seesaw where users can drop weights a
 - **Dynamic weight generation:** Each weight has a random size and color to make the interaction visually appealing and informative.
 - **State persistence:** I used local storage to save dropped weights and logs, allowing the simulation to survive page refreshes.
 - **Dashboard:** Designed for a better user experience, displaying the angle, left and right total weights, and the next weight.
+- **Initial UX cues:** Before starting the simulation, the playground blinks and a "Click to Drop" text is displayed to guide the user to start interacting.
 
 ## Trade-offs and Limitations
 - The requirements, including the bonuses, have been fully implemented; the limitations below are based on my observations.
