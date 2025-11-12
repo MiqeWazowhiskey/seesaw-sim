@@ -8,7 +8,9 @@ const rightWeightDisplay = document.querySelector(".right-weight");
 const angleDisplay = document.querySelector(".angle");
 const logContainer = document.querySelector(".log-container");
 const seesawBoard = document.querySelector(".seesaw-board");
+
 const maxTiltAngle = 30;
+let droppedWeights = [];
 
 let gameStarted = false;
 let currentWeight = 0;
@@ -18,9 +20,57 @@ let angle = 0;
 let leftTorque = 0;
 let rightTorque = 0;
 
-// just an instinct of an engineer to keep logs rather than updating only the ui container :)
 let logs = [];
-playground.classList.add("blink");
+
+const prevState = localStorage.getItem("droppedWeights");
+if (prevState) {
+  droppedWeights = JSON.parse(prevState);
+  droppedWeights.forEach((w) => {
+    const el = document.createElement("div");
+    el.className = "weight-generated";
+    el.textContent = `${w.weight} kg`;
+    el.style.width = `${w.size}px`;
+    el.style.height = `${w.size}px`;
+    el.style.background = w.color;
+    el.style.position = "absolute";
+    el.style.bottom = "0px";
+    el.style.left = `${w.left}px`;
+    el.style.display = "flex";
+    el.style.justifyContent = "center";
+    el.style.alignItems = "center";
+    el.style.borderRadius = "6px";
+    el.style.color = "white";
+    el.style.fontWeight = "bold";
+    seesawBoard.appendChild(el);
+    w.element = el;
+
+    const centerX = seesawBoard.offsetWidth / 2;
+    const distanceFromPivot = w.left + w.size / 2 - centerX;
+    if (distanceFromPivot < 0) {
+      leftTorque += w.weight * Math.abs(distanceFromPivot);
+      leftTotal += w.weight;
+      leftWeightDisplay.textContent = `${leftTotal} kg`;
+    } else {
+      rightTorque += w.weight * distanceFromPivot;
+      rightTotal += w.weight;
+      rightWeightDisplay.textContent = `${rightTotal} kg`;
+    }
+  });
+  updateAngle();
+} else {
+  starterText.style.display = "block";
+  playground.classList.add("blink");
+}
+const prevLogs = localStorage.getItem("logs");
+if (prevLogs) {
+  logs = JSON.parse(prevLogs);
+  logs.forEach((logText) => {
+    const logEntry = document.createElement("div");
+    logEntry.className = "log-entry";
+    logEntry.textContent = logText;
+    logContainer.prepend(logEntry);
+  });
+}
 
 function generateNewWeight() {
   const randomWeight = Math.floor(Math.random() * 10) + 1;
@@ -72,6 +122,9 @@ function resetGame() {
   weights.forEach((weight) => weight.remove());
   logContainer.innerHTML = "";
   logs = [];
+  droppedWeights = [];
+  localStorage.removeItem("droppedWeights");
+  localStorage.removeItem("logs");
   generateNewWeight();
 }
 
@@ -97,12 +150,13 @@ function logWeight(e) {
       mouseX - boardRect.width / 2
     ).toFixed(1)} px from the center`;
     logs.push(logText);
-
     const logEntry = document.createElement("div");
     logEntry.className = "log-entry";
     logEntry.textContent = logText;
     logContainer.prepend(logEntry);
   }
+
+  localStorage.setItem("logs", JSON.stringify(logs));
 }
 function updateAngle() {
   const rawAngle =
@@ -142,16 +196,29 @@ function dropWeight(e) {
   droppedWeight.style.top = `${startY}px`;
   droppedWeight.style.transform = "translateY(0px)";
 
-  if (mouseX < boardRect.width / 2) {
+  const centerX = seesawBoard.offsetWidth / 2;
+  const distanceFromPivot = mouseX - centerX;
+
+  if (distanceFromPivot < 0) {
+    leftTorque += weight * Math.abs(distanceFromPivot);
     leftTotal += weight;
     leftWeightDisplay.textContent = `${leftTotal} kg`;
-    leftTorque += weight * (boardRect.width / 2 - mouseX);
   } else {
+    rightTorque += weight * distanceFromPivot;
     rightTotal += weight;
     rightWeightDisplay.textContent = `${rightTotal} kg`;
-    rightTorque += weight * (mouseX - boardRect.width / 2);
   }
   logWeight(e);
+  const weightData = {
+    weight,
+    size: weightSize,
+    color,
+    left: mouseX - weightSize / 2,
+  };
+
+  droppedWeights.push(weightData);
+  localStorage.setItem("droppedWeights", JSON.stringify(droppedWeights));
+
   generateNewWeight();
   const targetY = boardRect.top - playgroundRect.top;
   console.log("startY:", startY, "targetY:", targetY);
