@@ -1,6 +1,4 @@
 # Seesaw Weight Balancing Simulation
-
-## Thought Process and Design Decisions
 The goal of this project was to simulate a seesaw where users can drop weights and see the plank tilt visually.
 
 - **Torque-based tilt:** I decided to calculate the seesaw angle based on torque, using the formula `torque = weight × distance from pivot`.
