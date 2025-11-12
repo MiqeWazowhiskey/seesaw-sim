@@ -172,7 +172,6 @@ function updateAngle() {
 function dropWeight(e) {
   const playgroundRect = playground.getBoundingClientRect();
   const boardRect = seesawBoard.getBoundingClientRect();
-  const previewRect = preWeight.getBoundingClientRect();
   const mouseX = e.clientX - boardRect.left;
   const weight = parseInt(preWeight.dataset.weight, 10);
   const weightSize = parseInt(preWeight.dataset.size, 10);
@@ -194,7 +193,7 @@ function dropWeight(e) {
   droppedWeight.style.pointerEvents = "none";
   playground.appendChild(droppedWeight);
   droppedWeight.style.left = `${mouseX - weightSize / 2}px`;
-  const startY = previewRect.top - playgroundRect.top;
+  const startY = 10;
   droppedWeight.style.top = `${startY}px`;
   droppedWeight.style.transform = "translateY(0px)";
 
