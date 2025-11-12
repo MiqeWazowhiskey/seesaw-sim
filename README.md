@@ -14,10 +14,6 @@ The goal of this project was to simulate a seesaw where users can drop weights a
 - **Dashboard:** Designed for a better user experience, displaying the angle, left and right total weights, and the next weight.
 - **Initial UX cues:** Before starting the simulation, the playground blinks and a "Click to Drop" text is displayed to guide the user to start interacting.
 
-## Trade-offs and Limitations
-- The requirements, including the bonuses, have been fully implemented; the limitations below are based on my observations.
-- **Responsiveness:** While the simulation is interactive on desktop, some mobile optimizations (like touch events) are not fully implemented.  
-
 ## AI Assistance
 - I consulted AI for logic while calculating torque, normalization and updating angle.
 - AI assisted to fix CSS syntax and find UI bugs.
