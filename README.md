@@ -6,9 +6,8 @@ The goal of this project was to simulate a seesaw where users can drop weights a
 - **Torque-based tilt:** I decided to calculate the seesaw angle based on torque, using the formula `torque = weight × distance from pivot`.
 - **Weight Movements:** I initially appended the weights as children of the container, which caused misalignment issues, so in the subsequent step, after the drop animation, I appended them as children of the board to ensure they move together with it.  
 - **Normalization:** To prevent extreme tilts on the first weight drop, I normalized the torque relative to the maximum possible torque, ensuring the tilt remains proportional. (AI Assisted)
-- **Animations:**
-- When a user clicks on the seesaw, the weight first appears as a preview under the mouse. Once dropped, it smoothly animates downwards.
-- The seesaw board itself rotates smoothly based on the torque difference between left and right sides. The tilt angle is calculated proportionally and capped at ±30°.
+- **Weight Drop Animation:** When a user clicks on the seesaw, the weight first appears as a preview under the mouse. Once dropped, it smoothly animates downwards.
+- **Board Tilt Animation:** The seesaw board itself rotates smoothly based on the torque difference between left and right sides. The tilt angle is calculated proportionally and capped at ±30°.
 - **Real-time feedback:** Mouse hover shows the weight preview, allowing users to place weights accurately.
 - **Dynamic weight generation:** Each weight has a random size and color to make the interaction visually appealing and informative.
 - **State persistence:** I used local storage to save dropped weights and logs, allowing the simulation to survive page refreshes.
