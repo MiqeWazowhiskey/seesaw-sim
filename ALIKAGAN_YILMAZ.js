@@ -8,6 +8,7 @@ const rightWeightDisplay = document.querySelector(".right-weight");
 const angleDisplay = document.querySelector(".angle");
 const logContainer = document.querySelector(".log-container");
 const seesawBoard = document.querySelector(".seesaw-board");
+const maxTiltAngle = 30;
 
 let gameStarted = false;
 let currentWeight = 0;
@@ -105,8 +106,9 @@ function logWeight(e) {
 }
 function updateAngle() {
   const rawAngle =
-    ((rightTorque - leftTorque) / Math.max(leftTorque + rightTorque, 1)) * 30;
-  const angle = Math.max(-30, Math.min(30, rawAngle));
+    ((rightTorque - leftTorque) / Math.max(leftTorque + rightTorque, 1)) *
+    maxTiltAngle;
+  const angle = Math.max(-maxTiltAngle, Math.min(maxTiltAngle, rawAngle));
   seesawBoard.style.transform = `translateX(-50%) rotate(${angle}deg)`;
   angleDisplay.textContent = `${angle.toFixed(1)}°`;
 }
