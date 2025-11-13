@@ -17,8 +17,7 @@ The goal of this project was to simulate a seesaw where users can drop weights a
 
 ## Trade-offs and Limitations
 
-- The requirements, including the bonuses, have been fully implemented; the limitations below are based on my observations.
-- **Responsiveness:** While the simulation is interactive on desktop, some mobile optimizations (like touch events) are not fully implemented.
+- The requirements, including the bonuses, have been fully implemented.
 
 ## AI Assistance
 
