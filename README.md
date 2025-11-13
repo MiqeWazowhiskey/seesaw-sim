@@ -23,3 +23,9 @@ The goal of this project was to simulate a seesaw where users can drop weights a
 
 - I consulted AI for logic while calculating torque, normalization and updating angle.
 - AI assisted to fix CSS syntax and find UI bugs.
+
+<img width="1920" height="946" alt="Screenshot 2025-11-13 at 09 30 16" src="https://github.com/user-attachments/assets/e0710f6a-a6d2-44d2-b2d8-100babd7243f" />
+
+<img width="1918" height="941" alt="Screenshot 2025-11-13 at 09 29 59" src="https://github.com/user-attachments/assets/8df046f2-d7ba-477b-81a4-7a45037be375" />
+
+<img width="478" height="944" alt="Screenshot 2025-11-13 at 09 36 39" src="https://github.com/user-attachments/assets/babedd58-37da-4e55-9260-fb62361bb1c9" />
