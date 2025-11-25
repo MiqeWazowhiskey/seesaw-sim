@@ -9,6 +9,7 @@ const angleDisplay = document.querySelector(".angle");
 const logContainer = document.querySelector(".log-container");
 const seesawBoard = document.querySelector(".seesaw-board");
 
+playground.style.height = "380px";
 const maxTiltAngle = 30;
 let droppedWeights = [];
 
@@ -128,36 +129,30 @@ function resetGame() {
   generateNewWeight();
 }
 
-function logWeight(e) {
-  let logText = "";
+function logWeight() {
   const boardRect = seesawBoard.getBoundingClientRect();
-  const mouseX = e.clientX - boardRect.left;
-  const intWeight = parseInt(preWeight.dataset.weight);
+  const boardCenterX = boardRect.left + boardRect.width / 2;
+  const weightRect = preWeight.getBoundingClientRect();
+  const weight = parseInt(preWeight.dataset.weight, 10);
+  const weightCenterX = weightRect.left + weightRect.width / 2;
 
-  if (mouseX < boardRect.width / 2) {
-    logText = `${intWeight} kg dropped on the LEFT side at ${Math.abs(
-      mouseX - boardRect.width / 2
-    ).toFixed(1)} px from the center`;
+  const distance = weightCenterX - boardCenterX;
 
-    logs.push(logText);
+  const side = distance < 0 ? "LEFT" : "RIGHT";
+  const absDistance = Math.abs(distance);
 
-    const logEntry = document.createElement("div");
-    logEntry.className = "log-entry";
-    logEntry.textContent = logText;
-    logContainer.prepend(logEntry);
-  } else {
-    logText = `${intWeight} kg dropped on the RIGHT side at ${Math.abs(
-      mouseX - boardRect.width / 2
-    ).toFixed(1)} px from the center`;
-    logs.push(logText);
-    const logEntry = document.createElement("div");
-    logEntry.className = "log-entry";
-    logEntry.textContent = logText;
-    logContainer.prepend(logEntry);
-  }
-
+  const logText = `Dropped ${weight} kg on ${side} side, ${absDistance.toFixed(
+    1
+  )} px from pivot.`;
+  logs.push(logText);
   localStorage.setItem("logs", JSON.stringify(logs));
+
+  const logEntry = document.createElement("div");
+  logEntry.className = "log-entry";
+  logEntry.textContent = logText;
+  logContainer.prepend(logEntry);
 }
+
 function updateAngle() {
   const maxDistance = seesawBoard.offsetWidth / 2;
   const totalWeight = leftTotal + rightTotal;
@@ -172,7 +167,7 @@ function updateAngle() {
 function dropWeight(e) {
   const playgroundRect = playground.getBoundingClientRect();
   const boardRect = seesawBoard.getBoundingClientRect();
-  const mouseX = e.clientX - boardRect.left;
+  const mouseX = e.clientX - playgroundRect.left;
   const weight = parseInt(preWeight.dataset.weight, 10);
   const weightSize = parseInt(preWeight.dataset.size, 10);
   const color = preWeight.dataset.color;
@@ -193,7 +188,7 @@ function dropWeight(e) {
   droppedWeight.style.pointerEvents = "none";
   playground.appendChild(droppedWeight);
   droppedWeight.style.left = `${mouseX - weightSize / 2}px`;
-  const startY = 10;
+  const startY = e.clientY - playgroundRect.top;
   droppedWeight.style.top = `${startY}px`;
   droppedWeight.style.transform = "translateY(0px)";
 
@@ -251,9 +246,13 @@ restartButton.addEventListener("click", function () {
 
 playground.addEventListener("mousemove", (e) => {
   const rect = playground.getBoundingClientRect();
+  const weightSize = parseInt(preWeight.dataset.size, 10);
   const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  console.log("Y:", e.clientY, "RECTTOP:", rect.top);
   preWeight.style.display = "flex";
-  preWeight.style.left = `${x - preWeight.offsetWidth / 2}px`;
+  preWeight.style.left = `${x + weightSize}px`;
+  //preWeight.style.marginBottom = `${y}px !important`;
 });
 
 playground.addEventListener("mouseleave", () => {
